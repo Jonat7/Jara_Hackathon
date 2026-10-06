@@ -80,15 +80,23 @@ four monthly folds, plus a validation split for tuning that never touches the te
 
 ## Results (test window 2023-12-15 → 2024-02-27)
 
-| model | MAE | RMSE | MAPE % | R2 | bias | daily MAPE % |
-|---|---|---|---|---|---|---|
-| **gbm** | **9.90** | 12.81 | 7.10 | **0.91** | -1.24 | **3.70** |
-| random forest | 12.17 | 15.94 | 9.11 | 0.86 | +1.88 | 4.27 |
-| ridge | 12.59 | 15.81 | 9.80 | 0.86 | +2.38 | 5.35 |
-| linear regression (OLS) | 12.59 | 15.81 | 9.80 | 0.86 | +2.38 | 5.35 |
-| naive lag-1d *(infeasible)* | 18.29 | 23.61 | 13.53 | 0.69 | +0.49 | 7.53 |
-| naive lag-2d | 24.40 | 31.89 | 18.04 | 0.43 | +0.85 | 12.27 |
-| naive seasonal lag-7d | 30.44 | 39.16 | 21.58 | 0.14 | +2.25 | 17.54 |
+| model | MAE | RMSE | MAPE % | R2 | daily MAPE % |
+|---|---|---|---|---|---|
+| **LSTM (5-seed ensemble)** | **10.90** | **14.43** | **6.64** | **0.92** | **3.24** |
+| gbm | 11.97 | 15.59 | 7.10 | 0.91 | 3.88 |
+| random forest | 14.52 | 19.01 | 9.03 | 0.86 | 4.43 |
+| ridge | 15.04 | 18.96 | 9.70 | 0.86 | 5.25 |
+| linear regression (OLS) | 15.04 | 18.96 | 9.70 | 0.86 | 5.25 |
+| naive lag-1d *(infeasible)* | 21.91 | 28.38 | 13.35 | 0.70 | 7.47 |
+| naive lag-2d | 29.36 | 38.46 | 17.85 | 0.44 | 12.07 |
+| naive seasonal lag-7d | 36.78 | 47.44 | 21.44 | 0.15 | 17.43 |
+
+Panel is **407 households** (`PANEL_MODE = "all"`): every household with data in the
+window. Three stopped reporting before it opens and cannot be included at all.
+
+The LSTM wins across five seeds (per-seed mean 11.26, sd 0.18, range 10.96-11.42 - every
+seed beat the gbm). Caveat: it early-stops on a chronological validation slice while the
+gbm runs fixed iterations, so a tuned model is being compared with an untuned one.
 
 Plain OLS and ridge are identical to two decimal places. With 17 features and 30,336
 training rows there is nothing for an L2 penalty to prevent, so the regularisation buys

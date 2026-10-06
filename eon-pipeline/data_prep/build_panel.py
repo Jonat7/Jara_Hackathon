@@ -34,10 +34,18 @@ def select_panel():
                 "SMD_15min_TimeAvailable_LatestTimestamp"):
         ov[col] = pd.to_datetime(ov[col], utc=True, format="ISO8601")
 
-    keep = ov[
-        (ov["SMD_15min_TimeAvailable_EarliestTimestamp"] <= START)
-        & (ov["SMD_15min_TimeAvailable_LatestTimestamp"] >= END - pd.Timedelta("15min"))
-    ].copy()
+    if config.PANEL_MODE == "all":
+        # Any household overlapping the window. n_reporting rescaling absorbs the
+        # varying membership; see config.PANEL_MODE for what that assumes.
+        keep = ov[
+            (ov["SMD_15min_TimeAvailable_EarliestTimestamp"] < END)
+            & (ov["SMD_15min_TimeAvailable_LatestTimestamp"] > START)
+        ].copy()
+    else:
+        keep = ov[
+            (ov["SMD_15min_TimeAvailable_EarliestTimestamp"] <= START)
+            & (ov["SMD_15min_TimeAvailable_LatestTimestamp"] >= END - pd.Timedelta("15min"))
+        ].copy()
 
     hh = pd.read_csv(os.path.join(config.META, "households.csv"), sep=";")
     keep = keep.merge(hh[["Household_ID", "Group", "Weather_ID",
@@ -88,8 +96,8 @@ def aggregate(panel):
 def main():
     config.require_data()
     panel = select_panel()
-    print("Panel: %d households covering %s..%s"
-          % (len(panel), config.PANEL_START, config.PANEL_END))
+    print("Panel (%s): %d households covering %s..%s"
+          % (config.PANEL_MODE, len(panel), config.PANEL_START, config.PANEL_END))
     print(panel["Installation_HasPVSystem"].value_counts(dropna=False).to_string())
     print("Weather stations:", panel["Weather_ID"].value_counts().to_dict())
 

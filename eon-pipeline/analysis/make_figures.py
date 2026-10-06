@@ -83,7 +83,7 @@ def fig_data_overview(df):
     ax[2].tick_params(axis="x", rotation=30)
 
     fig.tight_layout()
-    fig.savefig(os.path.join(config.OUTPUTS, "fig_data_overview.png"), dpi=130)
+    config.savefig(fig, "fig_data_overview.png", dpi=130)
     plt.close(fig)
 
 
@@ -125,7 +125,7 @@ def fig_load_vs_temperature(df):
     ax[1].legend()
 
     fig.tight_layout()
-    fig.savefig(os.path.join(config.OUTPUTS, "fig_load_vs_temperature.png"), dpi=130)
+    config.savefig(fig, "fig_load_vs_temperature.png", dpi=130)
     plt.close(fig)
 
 
@@ -170,7 +170,7 @@ def fig_model_comparison():
     ax[2].set_title("Permutation importance: temperature dominates")
 
     fig.tight_layout()
-    fig.savefig(os.path.join(config.OUTPUTS, "fig_model_comparison.png"), dpi=130)
+    config.savefig(fig, "fig_model_comparison.png", dpi=130)
     plt.close(fig)
 
 
@@ -207,7 +207,7 @@ def fig_backtest():
     ax[1].legend(handles, seasons, fontsize=8)
 
     fig.tight_layout()
-    fig.savefig(os.path.join(config.OUTPUTS, "fig_backtest.png"), dpi=130)
+    config.savefig(fig, "fig_backtest.png", dpi=130)
     plt.close(fig)
 
 
@@ -282,8 +282,7 @@ def fig_model_table():
              "slot), not a per-household value. Lower is better except R2.",
              fontsize=8.5, color="#444444", va="bottom")
     fig.tight_layout(rect=[0, 0.14, 1, 0.92])
-    fig.savefig(os.path.join(config.OUTPUTS, "fig_comparison_model_table.png"),
-                dpi=160, facecolor="white")
+    config.savefig(fig, "fig_comparison_model_table.png", dpi=160, facecolor="white")
     plt.close(fig)
 
 

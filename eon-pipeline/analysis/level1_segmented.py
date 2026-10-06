@@ -213,7 +213,7 @@ def main():
     ax[2].margins(y=0.18)
 
     fig.tight_layout()
-    fig.savefig(os.path.join(config.OUTPUTS, "fig_level1.png"), dpi=130)
+    config.savefig(fig, "fig_level1.png", dpi=130)
     print("\nWrote level1_metrics.csv, level1_predictions.csv, fig_level1.png")
     return 0
 

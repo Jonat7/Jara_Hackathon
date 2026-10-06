@@ -250,7 +250,7 @@ def main():
     ax[3].legend(fontsize=8)
 
     fig.tight_layout()
-    fig.savefig(os.path.join(config.OUTPUTS, "fig_level3.png"), dpi=130)
+    config.savefig(fig, "fig_level3.png", dpi=130)
     print("\nWrote level3_quantiles.csv, level3_predictions.csv, fig_level3.png")
     return 0
 

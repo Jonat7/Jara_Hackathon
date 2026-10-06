@@ -25,6 +25,7 @@ or keep it anywhere you like and point this at it:
 """
 import os
 import sys
+import time
 
 PIPELINE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.dirname(PIPELINE)
@@ -59,6 +60,14 @@ def require_data():
 # Balanced panel: households with unbroken coverage across this whole window (332 of 410).
 PANEL_START = "2023-02-01"
 PANEL_END = "2024-02-27"
+
+# Which households form the panel.
+#   "balanced" - only those with unbroken coverage across the whole window (332 of 410).
+#                The aggregate is then a like-for-like series with no composition drift.
+#   "all"      - every household with any data in the window (410). Coverage runs 96-98%
+#                except Feb 2023 at 88%, so the n_reporting rescaling stays a small
+#                correction; it does assume absent households are average.
+PANEL_MODE = "all"
 
 # Chronological split. Test is the last ~20% of the window - never split randomly.
 TEST_START = "2023-12-15"
@@ -99,3 +108,22 @@ FEATURES_LOOSE = FEATURES_STRICT + ["lag_1d"]
 
 def feature_list():
     return FEATURES_STRICT if STRICT_GATE_CLOSURE else FEATURES_LOOSE
+
+
+def savefig(fig, filename, dpi=130, **kw):
+    """Save a figure into OUTPUTS, retrying through transient cloud-sync locks.
+
+    Sciebo grabs newly written files to upload them, which surfaces as
+    OSError EINVAL part-way through a write and has killed whole pipeline runs.
+    Retrying a moment later succeeds.
+    """
+    path = os.path.join(OUTPUTS, filename)
+    last = None
+    for attempt in range(6):
+        try:
+            fig.savefig(path, dpi=dpi, **kw)
+            return path
+        except OSError as exc:
+            last = exc
+            time.sleep(1.5)
+    raise last

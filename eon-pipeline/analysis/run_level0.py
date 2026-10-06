@@ -147,7 +147,7 @@ def main():
     axes[0].set_ylabel("kWh per 15-min slot (%d households)" % int(df["n_reporting"].max()))
     axes[0].legend()
     fig.tight_layout()
-    fig.savefig(os.path.join(config.OUTPUTS, "fig_example_days.png"), dpi=130)
+    config.savefig(fig, "fig_example_days.png", dpi=130)
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 4.5))
     by_slot = (out["gbm"] - out["actual"]).abs().groupby(test["slot_of_day"]).mean()
@@ -168,7 +168,7 @@ def main():
     axes[1].tick_params(axis="x", rotation=30)
     axes[1].legend()
     fig.tight_layout()
-    fig.savefig(os.path.join(config.OUTPUTS, "fig_error_structure.png"), dpi=130)
+    config.savefig(fig, "fig_error_structure.png", dpi=130)
 
     print("\nWrote metrics, predictions, importance and 2 figures to outputs/")
     return 0

@@ -230,7 +230,7 @@ def main():
     ax[3].set_title("Conclusions hold across price assumptions")
 
     fig.tight_layout()
-    fig.savefig(os.path.join(config.OUTPUTS, "fig_level2.png"), dpi=130)
+    config.savefig(fig, "fig_level2.png", dpi=130)
     print("\nWrote level2_costs.csv, level2_sensitivity.csv, fig_level2.png")
     return 0
 

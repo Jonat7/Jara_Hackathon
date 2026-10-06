@@ -16,6 +16,7 @@ Stages, in order:
     level1    analysis/level1_segmented.py  separate models per group, pooled vs split
     level2    analysis/level2_cost.py       score the forecasts in euros, not kWh
     level3    analysis/level3_uncertainty.py quantile forecasts and interval width
+    lstm      analysis/lstm_compare.py      LSTM over five seeds, same data and split
 
 Stops at the first failing stage. `panel` failing usually means the challenge data is not
 where config.py expects it - the error message says where it looked. `check` failing means
@@ -39,6 +40,7 @@ STAGES = [
     ('level1', ['analysis/level1_segmented.py']),
     ('level2', ['analysis/level2_cost.py']),
     ('level3', ['analysis/level3_uncertainty.py']),
+    ('lstm', ['analysis/lstm_compare.py']),
 ]
 
 

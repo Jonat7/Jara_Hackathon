@@ -1,0 +1,13 @@
+# Challenge data: ~1.7 GB, cloned separately (see eon-pipeline/README.md)
+rwth_hackathon/
+
+# Large regenerable outputs - run_all.py rebuilds them in about ten minutes.
+# Named explicitly rather than globbed, so small result files are not caught.
+eon-pipeline/outputs/features.csv
+eon-pipeline/outputs/panel_aggregate.csv
+eon-pipeline/outputs/predictions_test.csv
+eon-pipeline/outputs/level1_predictions.csv
+eon-pipeline/outputs/level3_predictions.csv
+
+__pycache__/
+*.pyc
